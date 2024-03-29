@@ -45,7 +45,10 @@ example (a b c d e f : ℝ) (h : b * c = e * f) : a * b * c * d = a * e * f * d 
   rw[← mul_assoc a e f]
 
 example (a b c d : ℝ) (hyp : c = b * a - d) (hyp' : d = a * b) : c = 0 := by
-  sorry
+  rw[hyp]
+  rw[hyp']
+  rw[mul_comm]
+  rw[sub_self]
 
 example (a b c d e f : ℝ) (h : a * b = c * d) (h' : e = f) : a * (b * e) = c * (d * f) := by
   rw [h', ← mul_assoc, h, mul_assoc]
@@ -106,10 +109,11 @@ section
 variable (a b c d : ℝ)
 
 example : (a + b) * (c + d) = a * c + a * d + b * c + b * d := by
-  sorry
+  rw[mul_add, add_mul, add_mul, ← add_assoc, add_comm]
 
 example (a b : ℝ) : (a + b) * (a - b) = a ^ 2 - b ^ 2 := by
-  sorry
+  rw[mul_sub]
+  rw[add_mul, add_mul]
 
 #check pow_two a
 #check mul_sub a b c
