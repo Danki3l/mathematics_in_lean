@@ -45,8 +45,15 @@ example : x ⊔ y = y ⊔ x := by
   sorry
 
 example : x ⊔ y ⊔ z = x ⊔ (y ⊔ z) := by
-  sorry
-
+  apply le_antisymm
+  apply sup_le
+  apply sup_le
+  exact le_sup_left
+calc
+  y ≤ y ⊔ z := by sorry
+  _ ≤ x ⊔ (y ⊔ z) := by sorry
+calc
+  z ≤ y \
 theorem absorb1 : x ⊓ (x ⊔ y) = x := by
   sorry
 
@@ -109,4 +116,3 @@ example (x y : X) : 0 ≤ dist x y := by
   sorry
 
 end
-
