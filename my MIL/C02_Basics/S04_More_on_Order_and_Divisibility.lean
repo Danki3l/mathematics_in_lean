@@ -89,9 +89,13 @@ example : |a| - |b| ≤ |a - b| :=
     _ ≤ |a - b| + |b| - |b| := by
       apply sub_le_sub_right
       apply abs_add
-    _ ≤ |a - b| := by rw [add_sub_cancel]
-end
+    _ = |a - b| := by rw [add_sub_cancel]
 
+example : |a - b + b| - |b| ≤ |a - b| + |b| - |b| := by
+  apply sub_le_sub_right
+  apply abs_add
+
+end
 section
 variable (w x y z : ℕ)
 
