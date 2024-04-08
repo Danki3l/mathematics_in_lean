@@ -140,7 +140,7 @@ example (divab : a ∣ b) (divbc : b ∣ c) : a ∣ c := by
   use d * e; ring
 
 example (divab : a ∣ b) (divac : a ∣ c) : a ∣ b + c := by
-  sorry
+ sorry
 
 end
 
