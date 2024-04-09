@@ -7,9 +7,11 @@ namespace C03S01
 
 #eval 1 - 2 - 3
 
-lemma pos_abs : ∀ x : ℝ, 0 ≤ x → |x| = x := sorry
+lemma pos_abs : ∀ x : ℝ, 0 ≤ x → |x| = x := by
+  intro x h
+  rw[abs_of_nonneg h]
 
-variables (x : ℝ) (h : 0 ≤ x)
+variable (x : ℝ) (h : 0 ≤ x)
 #check pos_abs x h
 
 variable (P Q R : Prop)
@@ -17,8 +19,24 @@ variable (P Q R : Prop)
 
 #check ∀ x y ε : ℝ, 0 < ε → ε ≤ 1 → |x| < ε → |y| < ε → |x * y| < ε
 
-theorem my_lemma : ∀ x y ε : ℝ, 0 < ε → ε ≤ 1 → |x| < ε → |y| < ε → |x * y| < ε :=
-  sorry
+theorem my_lemma : ∀ x y ε : ℝ, 0 < ε → ε ≤ 1 → |x| < ε → |y| < ε → |x * y| < ε := by
+  intro x y ε epos ele1 xlt ylt
+  calc
+    |x * y| = |x| * |y| := by apply abs_mul
+    _ ≤ |x| * ε := by
+      apply mul_le_mul
+      . rfl
+      . exact LT.lt.le ylt
+      . exact abs_nonneg y
+      . exact abs_nonneg x
+    _ < 1 * ε := by
+      -- apply (mul_lt_mul_right epos).2
+      rw[mul_lt_mul_right epos]
+      linarith
+      -- exact gt_of_ge_of_gt ele1 xlt
+    _ = ε := by
+     rw[one_mul]
+
 
 section
 variable (a b δ : ℝ)
@@ -31,8 +49,24 @@ variable (ha : |a| < δ) (hb : |b| < δ)
 
 end
 
-theorem my_lemma2 : ∀ {x y ε : ℝ}, 0 < ε → ε ≤ 1 → |x| < ε → |y| < ε → |x * y| < ε :=
-  sorry
+theorem my_lemma2 : ∀ {x y ε : ℝ}, 0 < ε → ε ≤ 1 → |x| < ε → |y| < ε → |x * y| < ε := by
+  intro x y ε epos ele1 xlt ylt
+  calc
+    |x * y| = |x| * |y| := by apply abs_mul
+    _ ≤ |x| * ε := by
+      apply mul_le_mul
+      . rfl
+      . exact LT.lt.le ylt
+      . exact abs_nonneg y
+      . exact abs_nonneg x
+    _ < 1 * ε := by
+      -- apply (mul_lt_mul_right epos).2
+      rw[mul_lt_mul_right epos]
+      linarith
+      -- exact gt_of_ge_of_gt ele1 xlt
+    _ = ε := by
+     rw[one_mul]
+
 
 section
 variable (a b δ : ℝ)
@@ -46,7 +80,22 @@ end
 theorem my_lemma3 :
     ∀ {x y ε : ℝ}, 0 < ε → ε ≤ 1 → |x| < ε → |y| < ε → |x * y| < ε := by
   intro x y ε epos ele1 xlt ylt
-  sorry
+  calc
+    |x * y| = |x| * |y| := by apply abs_mul
+    _ ≤ |x| * ε := by
+      apply mul_le_mul
+      . rfl
+      . exact LT.lt.le ylt
+      . exact abs_nonneg y
+      . exact abs_nonneg x
+    _ < 1 * ε := by
+      -- apply (mul_lt_mul_right epos).2
+      rw[mul_lt_mul_right epos]
+      linarith
+      -- exact gt_of_ge_of_gt ele1 xlt
+    _ = ε := by
+     rw[one_mul]
+
 
 theorem my_lemma4 :
     ∀ {x y ε : ℝ}, 0 < ε → ε ≤ 1 → |x| < ε → |y| < ε → |x * y| < ε := by
