@@ -74,24 +74,39 @@ example : ¬∀ {f : ℝ → ℝ}, Monotone f → ∀ {a b}, f a ≤ f b → a �
   linarith
 
 example (x : ℝ) (h : ∀ ε > 0, x < ε) : x ≤ 0 := by
-  sorry
+apply le_of_not_gt
+intro h'
+linarith [h _ h']
 
 end
+
+
+
 
 section
 variable {α : Type*} (P : α → Prop) (Q : Prop)
 
 example (h : ¬∃ x, P x) : ∀ x, ¬P x := by
-  sorry
+  intro x Px
+  apply h
+  use x
 
 example (h : ∀ x, ¬P x) : ¬∃ x, P x := by
-  sorry
+  rintro ⟨x, Px⟩
+  exact h x Px
 
 example (h : ¬∀ x, P x) : ∃ x, ¬P x := by
-  sorry
+  by_contra h'
+  apply h
+  intro x
+  by_contra h''
+  exact h' ⟨x, h''⟩
 
 example (h : ∃ x, ¬P x) : ¬∀ x, P x := by
-  sorry
+ intro h'
+ rcases h with ⟨x, nPx⟩
+ apply nPx
+ apply h' x
 
 example (h : ¬∀ x, P x) : ∃ x, ¬P x := by
   by_contra h'
@@ -102,10 +117,12 @@ example (h : ¬∀ x, P x) : ∃ x, ¬P x := by
   exact h' ⟨x, h''⟩
 
 example (h : ¬¬Q) : Q := by
-  sorry
+  by_contra h'
+  exact h h'
 
 example (h : Q) : ¬¬Q := by
-  sorry
+  intro h'
+  exact h' h
 
 end
 
