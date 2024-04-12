@@ -7,9 +7,9 @@ namespace C03S04
 example {x y : ℝ} (h₀ : x ≤ y) (h₁ : ¬y ≤ x) : x ≤ y ∧ x ≠ y := by
   constructor
   · assumption
-  intro h
-  apply h₁
-  rw [h]
+  intro h -- Want to show x≠y. Assume x=y for the sake of contradiction.
+  apply h₁ -- It suffices to prove y ≤ x, because then h₁ is a contradiction.
+  rw [h] -- Using h, the goal is now y ≤ y. This follows from reflexivity.
 
 example {x y : ℝ} (h₀ : x ≤ y) (h₁ : ¬y ≤ x) : x ≤ y ∧ x ≠ y :=
   ⟨h₀, fun h ↦ h₁ (by rw [h])⟩
@@ -107,14 +107,43 @@ example {x y : ℝ} (h : x ≤ y) : ¬y ≤ x ↔ x ≠ y := by
 example {x y : ℝ} (h : x ≤ y) : ¬y ≤ x ↔ x ≠ y :=
   ⟨fun h₀ h₁ ↦ h₀ (by rw [h₁]), fun h₀ h₁ ↦ h₀ (le_antisymm h h₁)⟩
 
-example {x y : ℝ} : x ≤ y ∧ ¬y ≤ x ↔ x ≤ y ∧ x ≠ y := sorry
+example {x y : ℝ} : x ≤ y ∧ ¬y ≤ x ↔ x ≤ y ∧ x ≠ y := by
+ constructor
+ . rintro ⟨h₀, h_1⟩
+   constructor
+   . assumption
+   . intro h
+     apply h_1
+     rw[h]
+ . rintro ⟨h₀, h1⟩
+   constructor
+   assumption
+   intro h
+   apply h1
+   exact le_antisymm h₀ h
+
+
+
 
 theorem aux {x y : ℝ} (h : x ^ 2 + y ^ 2 = 0) : x = 0 :=
   have h' : x ^ 2 = 0 := by linarith [pow_two_nonneg x, pow_two_nonneg y]
   pow_eq_zero h'
 
-example (x y : ℝ) : x ^ 2 + y ^ 2 = 0 ↔ x = 0 ∧ y = 0 :=
-  sorry
+example (x y : ℝ) : x ^ 2 + y ^ 2 = 0 ↔ x = 0 ∧ y = 0 := by
+constructor
+intro h -- Assume x^2+y^2 = 0. We want to show x=0 and y=0.
+constructor
+. exact aux h
+. have h': x=0 := by apply aux h
+  rw[h'] at h
+  simp at h
+  exact h
+rintro ⟨h0, h1⟩
+rw[h0, h1]
+ring
+
+
+
 
 section
 
@@ -169,10 +198,20 @@ variable (a b c : α)
 
 example : ¬a < a := by
   rw [lt_iff_le_not_le]
-  sorry
+  push_neg
+  intro h
+  exact h
+
+
 
 example : a < b → b < c → a < c := by
   simp only [lt_iff_le_not_le]
-  sorry
+  rintro ⟨h0, h1⟩ ⟨h2, h3⟩
+  constructor
+  · apply le_trans h0 h2
+  intro h4
+  apply h1
+  apply le_trans h2 h4
+
 
 end

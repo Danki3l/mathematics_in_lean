@@ -130,7 +130,14 @@ section
 variable (f : ℝ → ℝ)
 
 example (h : ¬FnHasUb f) : ∀ a, ∃ x, f x > a := by
-  sorry
+intro a -- Introduce an "a" i.e. Let a be a real number
+by_contra h' -- Establishes that we are doing proof by contradiction
+push_neg at h' -- Makes h' easier to interpret
+unfold Not at h -- useful for expanding definition
+apply h -- It suffices to show that f has an upperbound will arrive at a contradiction.
+use a -- Candidate for upper bound
+exact h' -- Reasoning for why a really is an upperbound
+
 
 example (h : ¬∀ a, ∃ x, f x > a) : FnHasUb f := by
   push_neg at h
@@ -142,7 +149,11 @@ example (h : ¬FnHasUb f) : ∀ a, ∃ x, f x > a := by
   exact h
 
 example (h : ¬Monotone f) : ∃ x y, x ≤ y ∧ f y < f x := by
-  sorry
+unfold Monotone at h
+push_neg at h
+exact h
+
+
 
 example (h : ¬FnHasUb f) : ∀ a, ∃ x, f x > a := by
   contrapose! h
