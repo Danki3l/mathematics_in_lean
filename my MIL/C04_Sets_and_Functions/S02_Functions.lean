@@ -28,6 +28,7 @@ example : f '' (s ∪ t) = f '' s ∪ f '' t := by
   · use x, Or.inl xs
   use x, Or.inr xt
 
+
 example : s ⊆ f ⁻¹' (f '' s) := by
   intro x xs
   show f x ∈ f '' s
